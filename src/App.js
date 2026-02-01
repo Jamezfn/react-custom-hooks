@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useRef, useState, useEffect } from "react";
 // import Increment from "./Components/Increment";
 // import Decrement from "./Components/Decrement";
@@ -71,6 +72,17 @@ function App() {
         <button onClick={ createTask }>Create</button>
       </div>
       { !errorMessage && <Task tasks={ allTasks } onDeleteTask={ onDeleteTask }></Task> }
+=======
+import React from "react";
+import Increment from "./Components/Increment";
+import Decrement from "./Components/Decrement";
+
+function App() {
+  return (
+    <div>
+      <Increment></Increment>
+      <Decrement></Decrement>
+>>>>>>> 54549c234cf8f0151df5ed940b0150090a2ad358
     </div>
   );
 }
