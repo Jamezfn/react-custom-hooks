@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* App.css */
 
 * {
@@ -47,7 +46,6 @@ button {
 button:hover {
   opacity: 0.9;
 }
-=======
 .App {
   text-align: center;
 }
@@ -86,4 +84,3 @@ button:hover {
     transform: rotate(360deg);
   }
 }
->>>>>>> 54549c234cf8f0151df5ed940b0150090a2ad358

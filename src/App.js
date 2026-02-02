@@ -1,50 +1,72 @@
-<<<<<<< HEAD
 import React, { useRef, useState, useEffect } from "react";
 // import Increment from "./Components/Increment";
 // import Decrement from "./Components/Decrement";
 import Task from "./Components/Task";
 import './App.css'
+import useHttp from "./Utilities/use-http";
 
 function App() {
   let inputRef = useRef();
   let [allTasks, setAllTasks] = useState([]);
+  let [errorMessage, setErrorMessage] = useState(null);
+
+  let [error, sendGetRequest ] = useHttp('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json', 'GET', null, getAllTasks);
+  let [errorPost, sendPostRequest] = useHttp('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json', 'POST', inputRef.current.value, getAllTasks, createTask)
+
+
+  function getAllTasks(data){
+    data.then((tasks) => {
+      let taskList = [];
+
+      for (let key in tasks) {
+        taskList.push({id: key, name: tasks[key]})
+      }
+
+      setAllTasks(taskList);
+    })
+    
+    setErrorMessage(error);
+  }
 
   useEffect(() => {
-    fetchTask();
+    sendGetRequest();
   }, []);
 
-  function createTask(){
-    fetch('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json', {
-      method: 'POST',
-      body: JSON.stringify(inputRef.current.value)
-    })
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("Something went wrong. Please try again later");
-      }
+  function createTask(data){
+    // fetch('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json', {
+    //   method: 'POST',
+    //   body: JSON.stringify(inputRef.current.value)
+    // })
+    // .then((res) => {
+    //   if (!res.ok) {
+    //     throw new Error("Something went wrong. Please try again later");
+    //   }
 
-      fetchTask();
-    })
-    .catch((error) => {
-      setErrorMessage(error.message);
-    })
+    //   // fetchTask();
+    //   sendGetRequest();
+    // })
+    // .catch((error) => {
+    //   setErrorMessage(error.message);
+    // })
+    sendPostRequest();
+    sendGetRequest();
   }
-  function fetchTask(){
-    fetch('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json')
-    .then((res) => res.json())
-    .then((data) => {
-      // console.log(data);
-      let tasks = [];
-      for (let key in data) {
-        tasks.push({ id: key, name: data[key] });
-      }
+  // function fetchTask(){
+  //   fetch('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json')
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     // console.log(data);
+  //     let tasks = [];
+  //     for (let key in data) {
+  //       tasks.push({ id: key, name: data[key] });
+  //     }
 
-      setAllTasks(tasks);
-    })
-    .catch((error) => {
-      setErrorMessage(error.message);
-    })
-  }
+  //     setAllTasks(tasks);
+  //   })
+  //   .catch((error) => {
+  //     setErrorMessage(error.message);
+  //   })
+  // }
 
   function onDeleteTask(task){
     // console.log('Deleting task:', task);
@@ -56,7 +78,8 @@ function App() {
         throw new Error("Something went wrong. Please Try Again Later");
       }
 
-      fetchTask();
+      // fetchTask();
+      sendGetRequest();
     })
     .catch((error) => {
       setErrorMessage(error.message);
@@ -72,17 +95,6 @@ function App() {
         <button onClick={ createTask }>Create</button>
       </div>
       { !errorMessage && <Task tasks={ allTasks } onDeleteTask={ onDeleteTask }></Task> }
-=======
-import React from "react";
-import Increment from "./Components/Increment";
-import Decrement from "./Components/Decrement";
-
-function App() {
-  return (
-    <div>
-      <Increment></Increment>
-      <Decrement></Decrement>
->>>>>>> 54549c234cf8f0151df5ed940b0150090a2ad358
     </div>
   );
 }
