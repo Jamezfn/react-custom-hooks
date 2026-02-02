@@ -10,8 +10,8 @@ function App() {
   let [allTasks, setAllTasks] = useState([]);
   let [errorMessage, setErrorMessage] = useState(null);
 
-  let [error, sendGetRequest ] = useHttp('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json', 'GET', null, getAllTasks);
-  let [errorPost, sendPostRequest] = useHttp('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json', 'POST', inputRef.current.value, getAllTasks, createTask)
+  let [error, sendGetRequest ] = useHttp();
+  let [errorPost, sendPostRequest] = useHttp()
 
 
   function getAllTasks(data){
@@ -29,44 +29,24 @@ function App() {
   }
 
   useEffect(() => {
-    sendGetRequest();
+    onFetchTask();
   }, []);
 
-  function createTask(data){
-    // fetch('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json', {
-    //   method: 'POST',
-    //   body: JSON.stringify(inputRef.current.value)
-    // })
-    // .then((res) => {
-    //   if (!res.ok) {
-    //     throw new Error("Something went wrong. Please try again later");
-    //   }
-
-    //   // fetchTask();
-    //   sendGetRequest();
-    // })
-    // .catch((error) => {
-    //   setErrorMessage(error.message);
-    // })
-    sendPostRequest();
-    sendGetRequest();
+  function createTask(){
+    sendPostRequest('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json', 'POST', inputRef.current.value, onCreateTask);
+    // sendGetRequest();
   }
-  // function fetchTask(){
-  //   fetch('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json')
-  //   .then((res) => res.json())
-  //   .then((data) => {
-  //     // console.log(data);
-  //     let tasks = [];
-  //     for (let key in data) {
-  //       tasks.push({ id: key, name: data[key] });
-  //     }
 
-  //     setAllTasks(tasks);
-  //   })
-  //   .catch((error) => {
-  //     setErrorMessage(error.message);
-  //   })
-  // }
+  function onCreateTask(data){
+    data.then((d) => {
+      console.log(d);
+      onFetchTask();
+    })
+  }
+
+  function onFetchTask() {
+    sendGetRequest('https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks.json', 'GET', null, getAllTasks);
+  }
 
   function onDeleteTask(task){
     // console.log('Deleting task:', task);

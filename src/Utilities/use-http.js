@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-function useHttp(url, method, body, action) {
+function useHttp() {
     let [errorMessage, setErrorMessage] = useState(null);
 
-    function sendHTTPRequest(){
+    function sendHTTPRequest(url, method, body, action){
         fetch(url, {
         method: method,
         body: body ? JSON.stringify(body) : null
