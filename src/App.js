@@ -12,6 +12,7 @@ function App() {
 
   let [error, sendGetRequest ] = useHttp();
   let [errorPost, sendPostRequest] = useHttp()
+  let [errorDelete, sendDeleteRequest] = useHttp();
 
 
   function getAllTasks(data){
@@ -49,20 +50,17 @@ function App() {
   }
 
   function onDeleteTask(task){
-    // console.log('Deleting task:', task);
-    fetch(`https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks/${task.id}.json`, {
-      method: 'DELETE'
-    })
-    .then((res) => {
-      if (!res.ok){
-        throw new Error("Something went wrong. Please Try Again Later");
-      }
+    sendDeleteRequest(
+      `https://react-custom-hook-775df-default-rtdb.firebaseio.com/tasks/${task.id}.json`,
+      'DELETE',
+      null,
+      onDeleteComplete
+    );
+  }
 
-      // fetchTask();
-      sendGetRequest();
-    })
-    .catch((error) => {
-      setErrorMessage(error.message);
+  function onDeleteComplete(data){
+    data.then(() => {
+      onFetchTask();
     })
   }
 
